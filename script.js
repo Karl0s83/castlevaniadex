@@ -25,11 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const filteredData = bestiaryData.filter((beast) => {
-      // If the query is strictly numeric, we check for an exact ID match
       const isNumericQuery = /^\d+$/.test(query);
 
       if (isNumericQuery) {
-        // Convert both to numbers to ignore leading zeros (e.g. "012" vs "12")
         return parseInt(beast.id) === parseInt(query);
       }
 
@@ -68,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderResults(results) {
-    resultsContainer.innerHTML = ""; // Clear previous results
+    resultsContainer.innerHTML = "";
 
     if (results.length === 0) {
       renderPlaceholder();

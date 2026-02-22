@@ -45,7 +45,7 @@ body {
 
 .container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -64,42 +64,45 @@ body {
 
 .main-title {
   font-family: var(--font-heading);
-  font-size: 4.5rem;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
   color: var(--primary-red);
   text-transform: uppercase;
   letter-spacing: 4px;
   line-height: 1.1;
   margin-bottom: 1rem;
-  
+  width: 100%;
+  word-wrap: break-word;
+
   /* Advanced Text Styling */
   background: linear-gradient(to bottom, #ff4d4d, #8a0b0b);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  
-  text-shadow: 
-    0 5px 15px rgba(0,0,0,0.5),
+
+  text-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.5),
     0 0 20px rgba(138, 11, 11, 0.4);
-    
+
   /* Gold border effect workaround */
   filter: drop-shadow(0 0 2px var(--primary-gold));
-  
+
   transition: transform 0.3s ease;
 }
 
 .main-title:hover {
-    transform: scale(1.02);
-    text-shadow: 
-    0 5px 20px rgba(0,0,0,0.6),
+  transform: scale(1.02);
+  text-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.6),
     0 0 30px rgba(138, 11, 11, 0.6);
 }
 
 .heart-icon {
-  width: 260px; /* Adjusted size for better proportion */
+  width: 100%;
+  max-width: 260px;
   height: auto;
   filter: drop-shadow(0 0 15px rgba(138, 11, 11, 0.6));
   animation: neonPulse 3s infinite alternate ease-in-out;
-  margin-top: 20px; /* Slight overlap for cohesion */
+  margin-top: 20px;
 }
 
 /* Search Section */
@@ -171,6 +174,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
   animation: fadeIn 1s ease-out 0.6s backwards;
 }
@@ -215,7 +219,8 @@ body {
 
 .card-image-container {
   width: 100%;
-  height: 250px;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -227,9 +232,10 @@ body {
 }
 
 .card-image {
-  max-width: 90%;
-  max-height: 90%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  padding: 10px; /* Add some breathing room */
   image-rendering: pixelated; /* Enhance sprite clarity */
 }
 
@@ -248,8 +254,8 @@ body {
   border-bottom: 2px solid var(--primary-gold);
   padding-bottom: 10px;
   margin-bottom: 5px;
-  flex-wrap: wrap; /* Allow wrapping for long names */
-  gap: 10px; /* Add gap for when it wraps */
+  flex-wrap: nowrap; /* Prevent wrapping if possible with more width */
+  gap: 20px;
 }
 
 .card-id {
@@ -458,7 +464,7 @@ body {
   .bestiary-card {
     flex-direction: row;
     align-items: stretch;
-    max-width: 900px; /* Much wider card */
+    max-width: 950px; /* Increased width */
   }
 
   .card-image-container {

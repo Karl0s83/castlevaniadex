@@ -19,28 +19,236 @@
 
 body {
   font-family: var(--font-body);
-  background-image: url("assets/wallpaper.png");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+  background-color: var(--dark-bg);
 }
 
-/* Background Overlay to darken the wallpaper slightly for readability */
+/* Navigation & Mobile Menu */
+.main-nav {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 18px 0;
+  border-bottom: 2px solid var(--primary-gold);
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  color: var(--primary-gold);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.nav-favicon {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 0 5px var(--primary-red));
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+}
+
+.main-nav a {
+  text-decoration: none;
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+  padding-bottom: 5px;
+  border-bottom: 2px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--primary-gold);
+  border-bottom-color: var(--primary-gold);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1100;
+  width: 45px;
+  height: 45px;
+  position: relative;
+  overflow: visible; /* Fixed: Prevents clipping of gothic lines */
+}
+
+/* Gothic Hamburger Design */
+.hamburger-box {
+  width: 30px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible; /* Fixed: Prevents clipping of before/after lines */
+}
+
+.hamburger-inner {
+  display: block;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%); /* Fixed: Perfectly centered base line */
+}
+
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+  width: 28px;
+  height: 4px; /* Slightly thicker for better visibility */
+  background-color: var(--primary-gold);
+  position: absolute;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(138, 11, 11, 0.8); /* Stronger gothic glow */
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+  content: "";
+  display: block;
+}
+
+.hamburger-inner::before {
+  top: -12px; /* Fixed: Increased separation for better visibility */
+}
+
+.hamburger-inner::after {
+  bottom: -12px; /* Fixed: Increased separation for better visibility */
+}
+
+/* Elegant Gothic X Animation */
+.main-nav.nav-visible .hamburger-inner {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.main-nav.nav-visible .hamburger-inner::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.main-nav.nav-visible .hamburger-inner::after {
+  top: 0;
+  bottom: auto;
+  transform: rotate(-45deg); /* Fixed: forms an X instead of a parallel line */
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-container {
+    padding: 0 20px;
+  }
+
+  /* Fixed mobility styles to prevent stacking context zoom */
+  .main-nav {
+    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .nav-container ul {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100%; /* Use 100% instead of 100vh for stability */
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 2px solid var(--primary-gold);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+    display: flex;
+    z-index: 1000;
+  }
+
+  .main-nav.nav-visible .nav-container ul {
+    right: 0;
+  }
+
+  .nav-logo span {
+    display: none;
+  }
+}
+
+/* Background Overlay System */
 .background-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  /* Use inset 0 for absolute coverage */
+  inset: 0;
+  background-image: url("assets/wallpaper2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   z-index: -1;
+  pointer-events: none;
+  background-color: var(--dark-bg);
+  /* Force a new stacking context for stability */
+  transform: translateZ(0);
+}
+
+/* Base darken filter */
+.background-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+@media (max-width: 768px) {
+  .background-overlay {
+    /* REMOVED background-attachment: fixed (buggy on mobile) */
+    background-size: cover;
+    background-position: center center;
+    /* Use min-height to ensure it covers the scrolling body */
+    height: 100%;
+    min-height: 100vh;
+    transform: none; /* Fixed: removes conflict with nav backdrop-filter */
+  }
+}
+
+/* Prevent body scroll when menu is open without forcing height jumps */
+body.no-scroll {
+  overflow: hidden;
 }
 
 .container {
@@ -85,6 +293,9 @@ body {
 
   /* Gold border effect workaround */
   filter: drop-shadow(0 0 2px var(--primary-gold));
+
+  user-select: none;
+  cursor: default;
 
   transition: transform 0.3s ease;
 }
@@ -552,4 +763,70 @@ body {
     flex: 1;
     max-width: 300px;
   }
+}
+
+/* Bestiary Grid */
+.bestiary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.mini-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  animation: slideIn 0.5s ease-out forwards;
+  text-decoration: none;
+  color: inherit;
+}
+
+.mini-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-gold);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.mini-card-image-container {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.mini-card-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.mini-card-id {
+  font-family: var(--font-heading);
+  color: var(--primary-gold);
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.mini-card-name {
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  font-size: 1.1rem;
+  text-transform: uppercase;
 }

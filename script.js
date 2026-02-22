@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
   const resultsContainer = document.getElementById("resultsContainer");
+  const menuToggle = document.getElementById("menuToggle");
+  const menuIcon = document.getElementById("menuIcon");
+  const mainNav = document.querySelector(".main-nav");
 
   let bestiaryData = [];
 
@@ -9,6 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((response) => response.json())
     .then((data) => {
       bestiaryData = data;
+      // Check for URL parameter 'id'
+      const urlParams = new URLSearchParams(window.location.search);
+      const idParam = urlParams.get("id");
+      if (idParam) {
+        searchInput.value = idParam;
+        performSearch();
+      }
     })
     .catch((error) => {
       console.error("Error loading bestiary data:", error);
@@ -133,6 +143,23 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
       resultsContainer.appendChild(card);
+    });
+  }
+
+  // Mobile Menu Toggle
+  if (menuToggle) {
+    menuToggle.addEventListener("click", () => {
+      mainNav.classList.toggle("nav-visible");
+      document.body.classList.toggle("no-scroll");
+    });
+
+    // Close menu when clicking a link
+    const navLinks = mainNav.querySelectorAll("ul a");
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        mainNav.classList.remove("nav-visible");
+        document.body.classList.remove("no-scroll");
+      });
     });
   }
 
